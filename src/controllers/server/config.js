@@ -16,7 +16,7 @@ export default class Server {
     this.port = process.env.PORT || 3001;
     //llama, ejecuta el metodo middlewares.
     this.middlewares();
-    //this.routes();
+    this.routes();
   }
   //Se crea un metodo
   middlewares() {
@@ -29,14 +29,15 @@ export default class Server {
     //Configurar un archivo estatico.
 
     const __dirname = dirname(fileURLToPath(import.meta.url));
-    this.app.use(express.static(__dirname + "/public"));
+    this.app.use(express.static(__dirname + "/../../../public"));
     console.log(__dirname);
-    console.log(__dirname + "/public");
+    console.log(__dirname + "/../../../public");
   }
 
   listen() {
     this.app.listen(this.port, () =>
-      console.info(`El servidor se esta ejecutando en el puesto ${this.port}`)
+      console.info(`El servidor se esta ejecutando en: http://localhost:${this.port}`)
     );
   }
+  routes() {}
 }
