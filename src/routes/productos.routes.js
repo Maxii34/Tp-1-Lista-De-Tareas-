@@ -1,11 +1,10 @@
 import { Router } from "express";
+import { crearProducto, prueba } from "../controllers/producto.controler.js";
 /*  GET, POST, PATH, PUT, DELETE. */
 
 const router = Router();
 
-router.route('/').get((req, res)=>{
-console.log("Desde el controlador de puebas")
-res.send('Desde el controlador de puebas')
-})
+router.route('/test').get(prueba)
+router.route('/').post(crearProducto)
 
 export default router;
