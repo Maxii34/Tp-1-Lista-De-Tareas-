@@ -3,12 +3,13 @@ import cors from "cors";
 import morgan from "morgan";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import "./dbConfig.js"
 
 //Tomar un puerto
 //Configurar los middlewares
 //Usar o configurar las rutas
 
-export default class Server {
+class Server {
   constructor() {
     //se invoca express y se lo guarda en la propiedad app.
     this.app = express();
@@ -41,3 +42,5 @@ export default class Server {
   }
   routes() {}
 }
+
+export default Server;
