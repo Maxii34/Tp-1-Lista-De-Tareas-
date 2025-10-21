@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const productoSchema = new Schema(
+const tareaSchema = new Schema(
   {
     titulo: {
       type: String,
@@ -21,6 +21,6 @@ const productoSchema = new Schema(
     timestamps: true 
   }
 );
-const Producto = mongoose.model('Producto', productoSchema)
+const tarea = mongoose.model('Producto', tareaSchema)
 
-export default Producto;
+export default tarea;
