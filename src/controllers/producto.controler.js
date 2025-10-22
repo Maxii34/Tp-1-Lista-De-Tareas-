@@ -42,11 +42,11 @@ export const obtenerTareas = async (req, res) => {
 export const borrarTareas = async (req, res) => {
   try {
     console.log(req.params.id);
-    const tareaEncontrada = await tarea.findById(req.params.id);
+    //const tareaEncontrada = await tarea.findById(req.params.id);
+    const tareaEncontrada = await tarea.findByIdAndDelete(req.params.id)
     if (!tareaEncontrada) {
       return res.status(404).json({ mensaje: "La tarea no encontrada" });
     }
-    await tarea.findByIdAndDelete(req.params.id)
     res.status(200).json({ mensaje: "La tarea eliminada correctamente" });
   } catch (error) {
     console.error(error);
