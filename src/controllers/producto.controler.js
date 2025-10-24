@@ -24,6 +24,7 @@ export const listarTareas = async (req, res) => {
     res.status(500).json({ mensaje: "Error al listar las tareas" });
   }
 };
+
 // Obtener tarea por ID
 export const obtenerTareas = async (req, res) => {
   try {
@@ -38,12 +39,12 @@ export const obtenerTareas = async (req, res) => {
     res.status(500).json({ mensaje: "Error al obtener la tarea." });
   }
 };
-//borrar tarea por id.
+
+// Borrar tarea por id
 export const borrarTareas = async (req, res) => {
   try {
     console.log(req.params.id);
-    //const tareaEncontrada = await tarea.findById(req.params.id);
-    const tareaEncontrada = await tarea.findByIdAndDelete(req.params.id)
+    const tareaEncontrada = await tarea.findByIdAndDelete(req.params.id);
     if (!tareaEncontrada) {
       return res.status(404).json({ mensaje: "La tarea no encontrada" });
     }
@@ -51,5 +52,24 @@ export const borrarTareas = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: "Error al eliminar la tarea." });
+  }
+};
+
+// Editar tarea por id
+export const editarTarea = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const tareaActualizada = await tarea.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!tareaActualizada) {
+      return res.status(404).json({ mensaje: "La tarea no encontrada" });
+    }
+    res.status(200).json({ mensaje: "La tarea actualizada correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al editar la tarea." });
   }
 };
