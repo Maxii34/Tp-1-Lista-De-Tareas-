@@ -7,20 +7,25 @@ const tareaSchema = new Schema(
       required: true,
       minLength: 5,
       maxLength: 25,
-      unique: true
+      unique: true,
     },
     descripcion: {
       type: String,
       required: true,
       minLength: 5,
       maxLength: 100,
-      unique: true
-    }
+    },
+    estado: {
+      type: String,
+      required: true,
+      enum: ["Pendiente", "En Progreso", "Completada", "Cancelada"],
+      default: "Pendiente",
+    },
   },
   {
-    timestamps: true 
+    timestamps: true,
   }
 );
-const tarea = mongoose.model('Producto', tareaSchema)
+const tarea = mongoose.model("Tarea", tareaSchema);
 
 export default tarea;

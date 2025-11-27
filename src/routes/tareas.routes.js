@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { borrarTareas, crearTarea, editarTarea, listarTareas, obtenerTareas } from "../controllers/producto.controler.js";
+import { borrarTareas, crearTarea, editarTarea, listarTareas, obtenerTareas } from "../controllers/tareas.controler.js";
 /*  GET, POST, PATH, PUT, DELETE. */
 
 const router = Router();

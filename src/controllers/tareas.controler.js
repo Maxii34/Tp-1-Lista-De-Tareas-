@@ -1,4 +1,4 @@
-import tarea from "../models/producto.js";
+import tarea from "../models/tareas.js";
 
 // Archivo solo para rutas del CRUD
 
