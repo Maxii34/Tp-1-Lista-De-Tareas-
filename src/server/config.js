@@ -18,7 +18,7 @@ class Server {
     //llama, ejecuta el metodo middlewares.
     this.middlewares();
     this.routes();
-  }
+  } 
   //Se crea un metodo
   middlewares() {
     //app usa el middleweres cords. / Permite conesiones remotas.
