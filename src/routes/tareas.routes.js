@@ -1,10 +1,17 @@
 import { Router } from "express";
 import { borrarTareas, crearTarea, editarTarea, listarTareas, obtenerTareas } from "../controllers/tareas.controler.js";
-/*  GET, POST, PATH, PUT, DELETE. */
+import validarTareas from "../middlewares/validacionTareas.js";
+import validarIDTareas from "../middlewares/validacionIDTareas.js";
+
 
 const router = Router();
 
-router.route('/').post(crearTarea).get(listarTareas)
-router.route('/:id').get(obtenerTareas).put(editarTarea).delete(borrarTareas)
+router.route('/')
+.post(validarTareas, crearTarea)
+.get(listarTareas)
+router.route('/:id')
+.get(validarIDTareas, obtenerTareas)
+.put([validarIDTareas ,validarTareas], editarTarea)
+.delete(validarIDTareas, borrarTareas)
 
 export default router;
