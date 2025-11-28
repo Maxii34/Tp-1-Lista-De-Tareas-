@@ -7,7 +7,6 @@ const tareaSchema = new Schema(
       required: true,
       minLength: 5,
       maxLength: 25,
-      unique: true,
     },
     descripcion: {
       type: String,
