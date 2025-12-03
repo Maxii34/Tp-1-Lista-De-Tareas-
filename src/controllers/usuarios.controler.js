@@ -4,26 +4,26 @@ import bcrypt from "bcryptjs";
 
 export const crearUsuario = async (req, res) => {
   try {
-    const { tipo } = req.body;
+    const { rol } = req.body;
     const usuarioExiste = await usuarios.findOne({ email: req.body.email });
     if (usuarioExiste) {
       return res.status(400).json({ mensaje: "El usuario ya existe" });
     }
-    if (tipo === "admin") {
-      const adminExiste = await usuarios.findOne({ tipo: "admin" });
+    if (rol === "admin") {
+      const adminExiste = await usuarios.findOne({ rol: "admin" });
       if (adminExiste) {
         return res.status(400).json({ mensaje: "Ya existe un administrador" });
       }
     }
     const saltos = await bcrypt.genSalt(10);
-    const contraseñaEncriptada = await bcrypt.hash(req.body.contraseña, saltos);
-    req.body.contraseña = contraseñaEncriptada;
+    const passwordEncriptada = await bcrypt.hash(req.body.password, saltos);
+    req.body.password = passwordEncriptada;
 
     const nuevoUsuario = new usuarios(req.body);
     await nuevoUsuario.save();
     res.status(201).json({
       mensaje:
-        tipo === "admin"
+        rol === "admin"
           ? "Administrador creado correctamente"
           : "Usuario creado correctamente",
     });
@@ -45,25 +45,25 @@ export const listarUsuarios = async (req, res) => {
 
 export const iniciarSesion = async (req, res) => {
   try {
-    const { email, contraseña } = req.body;
-    //Verificar si el email y la contraseña existen
-    if (!email || !contraseña) {
+    const { email, password } = req.body;
+    //Verificar si el email y la password existen
+    if (!email || !password) {
       return res
         .status(400)
-        .json({ mensaje: "Email y contraseña son requeridos" });
+        .json({ mensaje: "Email y password son requeridos" });
     }
     const usuarioEncontrado = await usuarios.findOne({ email });
     //Verificar si el usuario existe
     if (!usuarioEncontrado) {
       return res.status(404).json({ mensaje: "Credenciales incorrectas" });
     }
-    //Comparar la contraseña ingresada con la almacenada
-    const contraseñaValida = await bcrypt.compare(
-      contraseña,
-      usuarioEncontrado.contraseña
+    //Comparar la password ingresada con la almacenada
+    const passwordValida = await bcrypt.compare(
+      password,
+      usuarioEncontrado.password
     );
-    //Verificar si la contraseña es correcta
-    if (!contraseñaValida) {
+    //Verificar si la password es correcta
+    if (!passwordValida) {
       return res.status(404).json({ mensaje: "Credenciales incorrectas" });
     }
     //Generar Token jwt
@@ -74,7 +74,7 @@ export const iniciarSesion = async (req, res) => {
       usuario: {
         nombre: usuarioEncontrado.nombre,
         email: usuarioEncontrado.email,
-        tipo: usuarioEncontrado.tipo,
+        rol: usuarioEncontrado.rol,
         id: usuarioEncontrado._id,
       },
     });
@@ -107,8 +107,8 @@ export const borrarUsuario = async (req, res) => {
     }
 
     // Evitar que se borre el único admin
-    if (usuarioBuscado.tipo === "admin") {
-      const adminCount = await usuarios.countDocuments({ tipo: "admin" });
+    if (usuarioBuscado.rol === "admin") {
+      const adminCount = await usuarios.countDocuments({ rol: "admin" });
       if (adminCount === 1) {
         return res
           .status(400)
