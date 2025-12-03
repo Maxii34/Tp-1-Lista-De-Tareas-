@@ -1,7 +1,5 @@
 import tarea from "../models/tareas.js";
 
-// Archivo solo para rutas del CRUD
-
 // Crear tarea
 export const crearTarea = async (req, res) => {
   try {
