@@ -1,4 +1,5 @@
 import usuarios from "../models/usuarios.js";
+import generarjwt from "./generarJWT.js";
 import bcrypt from "bcryptjs";
 
 export const crearUsuario = async (req, res) => {
@@ -20,14 +21,12 @@ export const crearUsuario = async (req, res) => {
 
     const nuevoUsuario = new usuarios(req.body);
     await nuevoUsuario.save();
-    res
-      .status(201)
-      .json({
-        mensaje:
-          tipo === "admin"
-            ? "Administrador creado correctamente"
-            : "Usuario creado correctamente",
-      });
+    res.status(201).json({
+      mensaje:
+        tipo === "admin"
+          ? "Administrador creado correctamente"
+          : "Usuario creado correctamente",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ mensaje: "Error al crear el usuario" });
@@ -36,11 +35,52 @@ export const crearUsuario = async (req, res) => {
 
 export const listarUsuarios = async (req, res) => {
   try {
-    const usuariosListado = await usuarios.find(); 
+    const usuariosListado = await usuarios.find();
     res.status(200).json(usuariosListado);
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: "Error al listar los usuarios" });
+  }
+};
+
+export const iniciarSesion = async (req, res) => {
+  try {
+    const { email, contraseña } = req.body;
+    //Verificar si el email y la contraseña existen
+    if (!email || !contraseña) {
+      return res
+        .status(400)
+        .json({ mensaje: "Email y contraseña son requeridos" });
+    }
+    const usuarioEncontrado = await usuarios.findOne({ email });
+    //Verificar si el usuario existe
+    if (!usuarioEncontrado) {
+      return res.status(404).json({ mensaje: "Credenciales incorrectas" });
+    }
+    //Comparar la contraseña ingresada con la almacenada
+    const contraseñaValida = await bcrypt.compare(
+      contraseña,
+      usuarioEncontrado.contraseña
+    );
+    //Verificar si la contraseña es correcta
+    if (!contraseñaValida) {
+      return res.status(404).json({ mensaje: "Credenciales incorrectas" });
+    }
+    //Generar Token jwt
+    const token = generarjwt(usuarioEncontrado._id);
+    res.status(200).json({
+      mensaje: "Inicio de sesión exitoso",
+      token,
+      usuario: {
+        nombre: usuarioEncontrado.nombre,
+        email: usuarioEncontrado.email,
+        tipo: usuarioEncontrado.tipo,
+        id: usuarioEncontrado._id,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al iniciar sesión" });
   }
 };
 
