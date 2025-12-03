@@ -1,6 +1,4 @@
-import tarea from "../models/producto.js";
-
-// Archivo solo para rutas del CRUD
+import tarea from "../models/tareas.js";
 
 // Crear tarea
 export const crearTarea = async (req, res) => {

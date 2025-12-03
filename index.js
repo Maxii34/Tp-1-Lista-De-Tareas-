@@ -10,4 +10,3 @@ server.app.use('/api', router)
 
 server.listen();
 
-//Nota: Quede en la clase 7/9 a las 1:05.. 

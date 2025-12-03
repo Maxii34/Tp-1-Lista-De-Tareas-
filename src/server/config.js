@@ -18,7 +18,7 @@ class Server {
     //llama, ejecuta el metodo middlewares.
     this.middlewares();
     this.routes();
-  }
+  } 
   //Se crea un metodo
   middlewares() {
     //app usa el middleweres cords. / Permite conesiones remotas.
@@ -31,8 +31,6 @@ class Server {
 
     const __dirname = dirname(fileURLToPath(import.meta.url));
     this.app.use(express.static(__dirname + "/../../public"));
-    console.log(__dirname);
-    console.log(__dirname + "/../../public");
   }
 
   listen() {
