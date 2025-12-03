@@ -84,8 +84,45 @@ export const iniciarSesion = async (req, res) => {
   }
 };
 
-export const obtenerUsuario = async (req, res) => {};
+export const obtenerUsuario = async (req, res) => {
+  try {
+    const usuarioObtenido = await usuarios.findById(req.Usuario);
+    if (!usuarioObtenido) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+    }
+    res.status(200).json(usuarioObtenido);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al obtener el usuario" });
+  }
+};
+
+export const borrarUsuario = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const usuarioBuscado = await usuarios.findById(req.params.id);
+
+    if (!usuarioBuscado) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+    }
+
+    // Evitar que se borre el único admin
+    if (usuarioBuscado.tipo === "admin") {
+      const adminCount = await usuarios.countDocuments({ tipo: "admin" });
+      if (adminCount === 1) {
+        return res
+          .status(400)
+          .json({ mensaje: "No se puede borrar el único administrador" });
+      }
+    }
+
+    // Ahora sí borrar
+    await usuarios.findByIdAndDelete(req.params.id);
+    res.status(200).json({ mensaje: "Usuario borrado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al borrar el usuario" });
+  }
+};
 
 export const editarUsuario = async (req, res) => {};
-
-export const borrarUsuario = async (req, res) => {};
