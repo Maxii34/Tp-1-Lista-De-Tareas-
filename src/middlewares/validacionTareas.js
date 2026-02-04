@@ -14,7 +14,7 @@ const prioridadesValidas = ["baja", "media", "alta"];
 const validacionTareas = [
 
   body("titulo")
-    .optional() // permite reutilizar en update
+    .optional() 
     .trim()
     .notEmpty()
     .withMessage("El título no puede estar vacío")
