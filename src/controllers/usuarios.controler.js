@@ -122,4 +122,17 @@ export const borrarUsuario = async (req, res) => {
   }
 };
 
-export const editarUsuario = async (req, res) => {};
+export const editarUsuario = async (req, res) => {
+  try {
+    console.log(req.params.id)
+    const usuarioActualizado = await usuarios.findByIdAndUpdate(
+      req.params.id, req.body, {new: true}) 
+      if (!usuarioActualizado) {
+        res.status(404).json({ mensaje: "El usuario no fue encontrado."})
+      }
+      res.status(200).json({ mensaje: "El usuario fue actualizado exitosamente."})    
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ mensaje: "Error al editar el usuario"})
+  }
+};
