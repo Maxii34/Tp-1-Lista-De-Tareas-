@@ -1,5 +1,5 @@
 import { param } from "express-validator";
-import resultadoValidacion from "./resultadoValidacion";
+import resultadoValidacion from "./resultadoValidacion.js";
 
 const validacionIDUsuario = [
     param("id").isMongoId().withMessage("El ID proporcionado debe ser un ID de MongoDB válido"),

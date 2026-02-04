@@ -15,9 +15,6 @@ export const crearUsuario = async (req, res) => {
         return res.status(400).json({ mensaje: "Ya existe un administrador" });
       }
     }
-    const saltos = await bcrypt.genSalt(10);
-    const passwordEncriptada = await bcrypt.hash(req.body.password, saltos);
-    req.body.password = passwordEncriptada;
 
     const nuevoUsuario = new usuarios(req.body);
     await nuevoUsuario.save();
