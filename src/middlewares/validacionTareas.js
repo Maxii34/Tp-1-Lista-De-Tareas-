@@ -1,27 +1,53 @@
 import { body } from "express-validator";
 import resultadoValidacion from "./resultadoValidacion.js";
 
+const estadosValidos = [
+  "pendiente",
+  "en_proceso",
+  "bloqueada",
+  "completada",
+  "cancelada"
+];
+
+const prioridadesValidas = ["baja", "media", "alta"];
+
 const validacionTareas = [
+
   body("titulo")
+    .optional() // permite reutilizar en update
     .trim()
     .notEmpty()
-    .withMessage("El título es obligatorio")
-    .isLength({ min: 5, max: 25 })
-    .withMessage("El título debe tener entre 5 y 25 caracteres"),
+    .withMessage("El título no puede estar vacío")
+    .isLength({ min: 5, max: 50 })
+    .withMessage("El título debe tener entre 5 y 50 caracteres"),
+
   body("descripcion")
+    .optional()
     .trim()
-    .notEmpty()
-    .withMessage("La descripción es obligatoria")
-    .isLength({ min: 5, max: 100 })
-    .withMessage("La descripción debe tener entre 5 y 100 caracteres"),
+    .isLength({ max: 300 })
+    .withMessage("La descripción no puede superar los 300 caracteres"),
+
   body("estado")
+    .optional()
     .trim()
-    .notEmpty()
-    .withMessage("El estado es obligatorio")
-    .isIn(["Pendiente", "En Progreso", "Completada", "Cancelada"])
+    .isIn(estadosValidos)
     .withMessage(
-      "El estado debe ser 'Pendiente', 'En Progreso', 'Completada' o 'Cancelada'"
+      "El estado debe ser: pendiente, en_progreso, completada o archivada"
     ),
+
+  body("prioridad")
+    .optional()
+    .trim()
+    .isIn(prioridadesValidas)
+    .withMessage("La prioridad debe ser: baja, media o alta"),
+
+  body("fechaLimite")
+    .optional()
+    .isISO8601()
+    .withMessage("La fecha límite debe ser una fecha válida")
+    .toDate(),
+
   (req, res, next) => resultadoValidacion(req, res, next),
 ];
+
 export default validacionTareas;

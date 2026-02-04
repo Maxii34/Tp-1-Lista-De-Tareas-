@@ -5,26 +5,48 @@ const tareaSchema = new Schema(
     titulo: {
       type: String,
       required: true,
+      trim: true,
       minLength: 5,
       maxLength: 25,
     },
+
     descripcion: {
       type: String,
       required: true,
-      minLength: 5,
-      maxLength: 100,
+      trim: true,
+      maxLength: 500,
     },
+
     estado: {
       type: String,
+      enum: ["pendiente", "en_proceso", "bloqueada", "completada", "cancelada"],
+      default: "pendiente",
+    },
+
+    prioridad: {
+      type: String,
+      enum: ["baja", "media", "alta"],
+      default: "media",
+    },
+
+    usuario: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Usuario",
       required: true,
-      enum: ["Pendiente", "En Progreso", "Completada", "Cancelada"],
-      default: "Pendiente",
+    },
+
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
   {
     timestamps: true,
   }
 );
-const tarea = mongoose.model("Tarea", tareaSchema);
 
-export default tarea;
+tareaSchema.index({ usuario: 1, estado: 1 });
+
+const Tarea = mongoose.model("Tarea", tareaSchema);
+
+export default Tarea;
