@@ -3,7 +3,7 @@ import tarea from "../models/tareas.js";
 // Crear tarea
 export const crearTarea = async (req, res) => {
   try {
-    const nuevaTarea = new tarea(req.body);
+    const nuevaTarea = new tarea({ ...req.body, usuario: req.Usuario });
     await nuevaTarea.save();
     res.status(201).json({ mensaje: "Tarea creada correctamente" });
   } catch (error) {
