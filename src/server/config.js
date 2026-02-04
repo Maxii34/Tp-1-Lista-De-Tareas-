@@ -17,7 +17,6 @@ class Server {
     this.port = process.env.PORT || 3001;
     //llama, ejecuta el metodo middlewares.
     this.middlewares();
-    this.routes();
   } 
   //Se crea un metodo
   middlewares() {
@@ -38,7 +37,6 @@ class Server {
       console.info(`El servidor se esta ejecutando en: http://localhost:${this.port}`)
     );
   }
-  routes() {}
 }
 
 export default Server;

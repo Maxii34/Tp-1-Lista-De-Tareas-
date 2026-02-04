@@ -8,6 +8,7 @@ import {
   editarTarea,
   listarTareas,
   obtenerTareas,
+  filtrarTareas,
 } from "../controllers/tareas.controler.js";
 
 const router = Router();
@@ -16,6 +17,10 @@ router
   .route("/")
   .post([validarToken, validarTareas], crearTarea)
   .get(listarTareas);
+
+router
+.route("/").get(filtrarTareas)
+
 router
   .route("/:id")
   .get(validarIDTareas, obtenerTareas)

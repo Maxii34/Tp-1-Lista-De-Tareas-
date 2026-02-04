@@ -5,6 +5,7 @@ import {
   iniciarSesion,
   obtenerUsuario,
   borrarUsuario,
+  editarUsuario,
 } from "../controllers/usuarios.controler.js";
 import validarToken from "../middlewares/validarToken.js";
 import validacionTareas from "../middlewares/validacionTareas.js";
@@ -19,6 +20,7 @@ router.route("/login").post(validacionTareas, iniciarSesion);
 router
   .route("/:id")
   .get([validarToken, validacionIDUsuario ], obtenerUsuario)
-  .delete([validarToken, validacionIDUsuario ], borrarUsuario);
+  .delete([validarToken, validacionIDUsuario ], borrarUsuario)
+  .put([validarToken, validacionIDUsuario ], editarUsuario)
 
 export default router;
