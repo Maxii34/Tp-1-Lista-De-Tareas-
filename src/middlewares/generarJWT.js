@@ -1,12 +1,19 @@
 import jwt from "jsonwebtoken";
 
-const generarjwt = (Usuario, email) => {
+const generarjwt = (id) => {
+    if (!id) {
+        throw new Error("No se puede generar el token sin el id");
+    }
+    if (!process.env.SECRETA_JWT) {
+        throw new Error("La clave secreta JWT no está definida");
+    }
+
     try {
-        const payload = { Usuario, email };
+        const payload = { id };
         const token = jwt.sign(payload, process.env.SECRETA_JWT, { expiresIn: "1h" });
         return token;
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.error(err);
         throw new Error("Error al generar el token");
     }
 }
