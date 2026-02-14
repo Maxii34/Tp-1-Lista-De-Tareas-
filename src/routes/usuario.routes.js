@@ -8,13 +8,13 @@ import {
   editarUsuario,
 } from "../controllers/usuarios.controler.js";
 import validarToken from "../middlewares/validarToken.js";
-import validacionTareas from "../middlewares/validacionTareas.js";
 import validacionIDUsuario from "../middlewares/validacionIDUsuario.js";
+import validacionUsuario from "../middlewares/validacionUsuario.js";
 
 const router = Router();
 
-router.route("/").post(validacionTareas, crearUsuario).get(validarToken, listarUsuarios);
-router.route("/login").post(validacionTareas, iniciarSesion);
+router.route("/").post(validacionUsuario, crearUsuario).get(validarToken, listarUsuarios);
+router.route("/login").post(validacionUsuario, iniciarSesion);
 
 // Rutas con ID
 router

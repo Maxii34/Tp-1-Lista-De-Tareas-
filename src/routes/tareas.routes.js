@@ -13,18 +13,20 @@ import {
 
 const router = Router();
 
+// Rutas para la raíz "/"
 router
   .route("/")
-  .post([validarToken, validarTareas], crearTarea)
-  .get(listarTareas);
+  .get(listarTareas)
+  .post(validarToken, validarTareas, crearTarea);
 
-router
-.route("/").get(filtrarTareas)
+// Ruta para filtros 
+router.get("/buscar", filtrarTareas); 
 
+// Rutas con ID
 router
   .route("/:id")
   .get(validarIDTareas, obtenerTareas)
-  .put([validarToken, validarIDTareas, validarTareas], editarTarea)
-  .delete([validarToken, validarIDTareas], borrarTareas);
+  .put(validarToken, validarIDTareas, validarTareas, editarTarea)
+  .delete(validarToken, validarIDTareas, borrarTareas);
 
 export default router;
