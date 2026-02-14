@@ -6,48 +6,40 @@ const estadosValidos = [
   "en_proceso",
   "bloqueada",
   "completada",
-  "cancelada"
+  "cancelada",
 ];
-
 const prioridadesValidas = ["baja", "media", "alta"];
 
-const validacionTareas = [
-
+const validacionTarea = [
   body("titulo")
-    .optional() 
     .trim()
     .notEmpty()
-    .withMessage("El título no puede estar vacío")
+    .withMessage("El título es obligatorio")
     .isLength({ min: 5, max: 50 })
     .withMessage("El título debe tener entre 5 y 50 caracteres"),
 
   body("descripcion")
-    .optional()
     .trim()
-    .isLength({ max: 300 })
-    .withMessage("La descripción no puede superar los 300 caracteres"),
+    .notEmpty()
+    .withMessage("La descripción es obligatoria")
+    .isLength({ min: 10, max: 500 })
+    .withMessage("La descripción debe tener entre 10 y 500 caracteres"),
 
   body("estado")
     .optional()
-    .trim()
+    .toLowerCase()
     .isIn(estadosValidos)
     .withMessage(
-      "El estado debe ser: pendiente, en_progreso, completada o archivada"
+      `El estado debe ser uno de los siguientes: ${estadosValidos.join(", ")}`,
     ),
 
   body("prioridad")
     .optional()
-    .trim()
+    .toLowerCase()
     .isIn(prioridadesValidas)
-    .withMessage("La prioridad debe ser: baja, media o alta"),
-
-  body("fechaLimite")
-    .optional()
-    .isISO8601()
-    .withMessage("La fecha límite debe ser una fecha válida")
-    .toDate(),
+    .withMessage("La prioridad debe ser baja, media o alta"),
 
   (req, res, next) => resultadoValidacion(req, res, next),
 ];
 
-export default validacionTareas;
+export default validacionTarea;
