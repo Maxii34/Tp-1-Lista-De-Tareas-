@@ -1,8 +1,6 @@
 import { body } from "express-validator";
 import resultadoValidacion from "./resultadoValidacion.js";
 
-const rolesValidos = ["admin", "usuario"];
-
 const validacionUsuario = [
   body("nombre")
     .trim()
@@ -22,17 +20,17 @@ const validacionUsuario = [
   body("password")
     .notEmpty()
     .withMessage("La contraseña es obligatoria")
-    .isLength({ min: 8 })
-    .withMessage("La contraseña debe tener mínimo 8 caracteres")
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .isLength({ min: 8, max: 50 }) // Aquí limitas a 50
+    .withMessage("La contraseña debe tener entre 8 y 50 caracteres")
+    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)
     .withMessage(
-      "La contraseña debe contener al menos una mayúscula, una minúscula y un número"
+      "La contraseña debe contener al menos una mayúscula, una minúscula y un número",
     ),
 
   body("rol")
     .optional()
-    .isIn(rolesValidos)
-    .withMessage("El rol debe ser 'admin' o 'usuario'"),
+    .isIn(["admin", "usuario"])
+    .withMessage("El rol proporcionado no es válido"),
 
   (req, res, next) => resultadoValidacion(req, res, next),
 ];

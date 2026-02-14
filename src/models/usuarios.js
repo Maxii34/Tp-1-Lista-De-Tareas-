@@ -5,7 +5,7 @@ const usuarioSchema = new Schema(
   {
     nombre: {
       type: String,
-      required: [true, "El nombre electronico es obligatorio"],
+      required: [true, "El nombre es obligatorio"],
       trim: true,
       minLength: [3, "El nombre es demaciado corto, minime 3 caracteres."],
       maxLength: [25, "El nombre es demaciado largo, maximo 25 caracteres. "],
@@ -13,7 +13,7 @@ const usuarioSchema = new Schema(
 
     email: {
       type: String,
-      required: [true, "El correo es obligatorio"],
+      required: [true, "El correo electronico es obligatorio"],
       unique: true,
       lowercase: true,
       trim: true,
