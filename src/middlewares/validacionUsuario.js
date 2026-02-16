@@ -1,13 +1,13 @@
 import { body } from "express-validator";
 import resultadoValidacion from "./resultadoValidacion.js";
 
-const validacionUsuario = [
-  body("nombre")
+export const validacionUsuario = [
+  body("nombreCompleto")
     .trim()
     .notEmpty()
     .withMessage("El nombre es obligatorio")
-    .isLength({ min: 3, max: 25 })
-    .withMessage("El nombre debe tener entre 3 y 25 caracteres"),
+    .isLength({ min: 5, max: 30 })
+    .withMessage("El nombre debe tener entre 5 y 30 caracteres"),
 
   body("email")
     .trim()
@@ -35,4 +35,17 @@ const validacionUsuario = [
   (req, res, next) => resultadoValidacion(req, res, next),
 ];
 
-export default validacionUsuario;
+export const validacionLogin = [
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("El email es obligatorio")
+    .isEmail()
+    .withMessage("Debe ser un email válido"),
+
+  body("password")
+    .notEmpty()
+    .withMessage("La contraseña es obligatoria"),
+
+  (req, res, next) => resultadoValidacion(req, res, next),
+];

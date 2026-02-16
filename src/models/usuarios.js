@@ -3,12 +3,12 @@ import bcrypt from "bcryptjs";
 
 const usuarioSchema = new Schema(
   {
-    nombre: {
+    nombreCompleto: {
       type: String,
       required: [true, "El nombre es obligatorio"],
       trim: true,
-      minLength: [3, "El nombre es demaciado corto, minime 3 caracteres."],
-      maxLength: [25, "El nombre es demaciado largo, maximo 25 caracteres. "],
+      minLength: [5, "El nombre es demaciado corto, minime 5 caracteres."],
+      maxLength: [30, "El nombre es demaciado largo, maximo 30 caracteres. "],
     },
 
     email: {

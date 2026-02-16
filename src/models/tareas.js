@@ -46,7 +46,7 @@ const tareaSchema = new Schema(
     usuario: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Usuario",
-      required: [true, "La tarea debe estar asociada a un usuario"],
+      //required: [true, "La tarea debe estar asociada a un usuario"],
     },
 
     isDeleted: {
