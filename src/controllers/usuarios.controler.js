@@ -15,9 +15,6 @@ export const crearUsuario = async (req, res) => {
         return res.status(400).json({ mensaje: "Ya existe un administrador" });
       }
     }
-    const saltos = await bcrypt.genSalt(10);
-    const passwordEncriptada = await bcrypt.hash(req.body.password, saltos);
-    req.body.password = passwordEncriptada;
 
     const nuevoUsuario = new usuarios(req.body);
     await nuevoUsuario.save();
@@ -125,4 +122,17 @@ export const borrarUsuario = async (req, res) => {
   }
 };
 
-export const editarUsuario = async (req, res) => {};
+export const editarUsuario = async (req, res) => {
+  try {
+    console.log(req.params.id)
+    const usuarioActualizado = await usuarios.findByIdAndUpdate(
+      req.params.id, req.body, {new: true}) 
+      if (!usuarioActualizado) {
+        res.status(404).json({ mensaje: "El usuario no fue encontrado."})
+      }
+      res.status(200).json({ mensaje: "El usuario fue actualizado exitosamente."})    
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ mensaje: "Error al editar el usuario"})
+  }
+};

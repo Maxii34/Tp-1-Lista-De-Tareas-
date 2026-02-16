@@ -3,7 +3,7 @@ import tarea from "../models/tareas.js";
 // Crear tarea
 export const crearTarea = async (req, res) => {
   try {
-    const nuevaTarea = new tarea(req.body);
+    const nuevaTarea = new tarea({ ...req.body, usuario: req.Usuario });
     await nuevaTarea.save();
     res.status(201).json({ mensaje: "Tarea creada correctamente" });
   } catch (error) {
@@ -20,6 +20,38 @@ export const listarTareas = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: "Error al listar las tareas" });
+  }
+};
+
+//filtrado de tarea por letras
+export const filtrarTareas = async (req, res) => {
+  try {
+    const { busqueda, estado, prioridad, page = 1, limit = 10 } = req.query;
+
+    const filtros = {
+      isDelete: false
+    };
+
+    if (estado) filtros.estado = estado;
+    if (prioridad) filtros.prioridad = prioridad;
+
+    if (busqueda) {
+      filtros.$or = [
+        { titulo: { $regex: busqueda, $options: "i" } },
+        { descripcion: { $regex: busqueda, $options: "i" } }
+      ];
+    }
+
+    const tareas = await tarea
+      .find(filtros)
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(tareas);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error al filtrar las tareas" });
   }
 };
 
